@@ -9,7 +9,6 @@ spec:
     repoURL: https://github.com/blithersoup/private-cloud-1
     targetRevision: HEAD
     path: apps/longhorn
-    kustomize: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
