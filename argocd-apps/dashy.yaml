@@ -19,11 +19,6 @@ spec:
         ingress:
           enabled: true
           className: tailscale
-          hosts: 
-            - dashy
-          paths:
-            - /
-          pathType: Prefix
           tls:
             - hosts:
                 - dashy
