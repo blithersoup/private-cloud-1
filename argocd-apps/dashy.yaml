@@ -18,8 +18,9 @@ spec:
         # Empty values indicates using chart defaults
         ingress:
           enabled: true
-          ingressClassName: tailscale
-          host: dashy
+          className: tailscale
+          hosts: 
+            - dashy
           paths:
             - /
           pathType: Prefix
