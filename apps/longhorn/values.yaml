@@ -1,0 +1,5 @@
+preUpgradeChecker:
+  jobEnabled: false
+persistence:
+  defaultClass: true
+  reclaimPolicy: Retain

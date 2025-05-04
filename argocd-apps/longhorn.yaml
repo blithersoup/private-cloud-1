@@ -3,21 +3,13 @@ kind: Application
 metadata:
   name: longhorn
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
-    repoURL: https://charts.longhorn.io
-    chart: longhorn
-    targetRevision: 1.8.1
-    helm:
-      valuesObject:
-        preUpgradeChecker:
-          jobEnabled: false
-        persistence:
-          defaultClass: true
-          reclaimPolicy: Retain
+    repoURL: https://github.com/blithersoup/private-cloud-1
+    targetRevision: HEAD
+    path: apps/longhorn
+    kustomize: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
