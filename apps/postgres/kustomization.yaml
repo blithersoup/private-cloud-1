@@ -4,12 +4,12 @@ kind: Kustomization
 namespace: postgres
 
 helmCharts:
-- name: postgresql
-  repo: https://registry-1.docker.io/bitnamicharts
-  version: 16.6.6
-  releaseName: postgresql-db
-  namespace: postgres
-  valuesFile: values.yaml
+  - name: postgresql
+    repo: https://registry-1.docker.io/bitnamicharts
+    version: 16.6.6
+    releaseName: postgresql-db
+    namespace: postgres
+    valuesFile: values.yaml
 
 resources:
 - ingress.yaml
