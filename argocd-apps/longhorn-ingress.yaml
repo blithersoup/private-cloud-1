@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn-ingress
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/blithersoup/private-cloud-1
+    targetRevision: HEAD
+    path: apps/longhorn-ingress
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
