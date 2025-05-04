@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql-db
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: postgresql
+    targetRevision: 16.6.6
+    helm:
+      valuesObject:
+        global:
+          storageClass: longhorn
+        auth:
+          username: myappuser
+          password: "AnotherInsecurePasswordChangeMe!"
+          database: myappdb
+        primary:
+          persistence:
+            enabled: true
+            size: 10Gi
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+
+        readReplicas:
+          replicaCount: 1
+          persistence:
+            enabled: true
+            size: 10Gi
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: postgres
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      jsonPointers:
+        - /data
+    - group: ""
+      kind: Service
+      jsonPointers:
+        - /spec/clusterIPs
+        - /spec/clusterIP

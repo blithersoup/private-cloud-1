@@ -1,0 +1,29 @@
+architecture: replication
+
+replication:
+  enabled: true
+  readReplicas: 2
+  synchronousCommit: "on"
+  numSynchronousReplicas: 1
+
+postgresql:
+  username: root
+  password: password
+  database: database
+
+primary:
+  persistence:
+    enabled: true
+    storageClass: longhorn
+    size: 8Gi
+
+readReplicas:
+  persistence:
+    enabled: true
+    storageClass: longhorn
+    size: 8Gi
+
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 250m
