@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/blithersoup/private-cloud-1
-    path: apps
+    path: argocd-apps
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
