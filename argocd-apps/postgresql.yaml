@@ -32,7 +32,6 @@ spec:
             limits:
               memory: "1Gi"
               cpu: "500m"
-
         readReplicas:
           replicaCount: 1
           persistence:
@@ -55,13 +54,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-  ignoreDifferences:
-    - group: ""
-      kind: Secret
-      jsonPointers:
-        - /data
-    - group: ""
-      kind: Service
-      jsonPointers:
-        - /spec/clusterIPs
-        - /spec/clusterIP
