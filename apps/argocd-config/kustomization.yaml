@@ -1,2 +1,2 @@
 resources:
-  - argocd-cm.yaml
+  - argocd-config.yaml
