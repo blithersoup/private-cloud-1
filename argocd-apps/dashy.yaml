@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dashy
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://vyrtualsynthese.github.io/selfhosted-helmcharts/
+    chart: dashy
+    targetRevision: 1.0.0
+    helm:
+      values: |
+        # Example: If you needed to set specific node selectors or tolerations
+        # nodeSelector: {}
+        # tolerations: []
+        # For this basic setup, we don't need specific overrides for the operator.
+        {} # Empty values indicates using chart defaults
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dashy
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

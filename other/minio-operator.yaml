@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # Name of the Argo CD Application resource
+  name: minio-operator
+  # Namespace where this Application resource lives (usually 'argocd')
+  namespace: argocd
+  # Optional: Finalizer to ensure resources are deleted cleanly when the App is deleted
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  # Reference to the Argo CD Project (use 'default' if you haven't created others)
+  project: default
+
+  # Source of the deployment manifests (Helm chart in this case)
+  source:
+    # URL of the Helm repository
+    repoURL: https://operator.min.io/
+    # Name of the Helm chart in the repository
+    chart: operator
+    # Version of the Helm chart to deploy (Check for the latest compatible version)
+    targetRevision: 5.0.15 # Example version, check for latest stable
+
+    # Helm specific configurations (if any needed for the operator itself)
+    helm:
+      # You can override default values here if needed
+      # For a basic operator install, defaults are often sufficient.
+      # Check the operator chart's values.yaml for available options.
+      values: |
+        # Example: If you needed to set specific node selectors or tolerations
+        # nodeSelector: {}
+        # tolerations: []
+        # For this basic setup, we don't need specific overrides for the operator.
+        {} # Empty values indicates using chart defaults
+
+  # Destination cluster and namespace for the deployed resources
+  destination:
+    # Target cluster URL (use 'https://kubernetes.default.svc' for in-cluster deployment)
+    server: https://kubernetes.default.svc
+    # Kubernetes namespace WHERE THE OPERATOR WILL BE INSTALLED
+    # It's good practice to install operators in their own namespace
+    namespace: minio-operator
+
+  # Sync policy for Argo CD
+  syncPolicy:
+    # Enable automated synchronization
+    automated:
+      # Automatically delete resources that are no longer defined in the source
+      prune: true
+      # Automatically sync when the application is out-of-sync
+      selfHeal: true
+    # Additional sync options
+    syncOptions:
+      # Automatically create the destination namespace if it doesn't exist
+      - CreateNamespace=true
+      # Apply changes out-of-sync only? Useful for safety, but can slow down syncs. Default is false.
+      # - ApplyOutOfSyncOnly=true
