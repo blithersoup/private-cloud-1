@@ -8,6 +8,3 @@ helmCharts:
     releaseName: postgresql-db
     namespace: postgres
     valuesFile: values.yaml
-
-resources:
-- ingress.yaml

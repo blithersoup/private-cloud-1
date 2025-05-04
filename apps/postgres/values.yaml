@@ -5,6 +5,11 @@ auth:
   password: "AnotherInsecurePasswordChangeMe!"
   database: myappdb
 primary:
+  service:
+    type: LoadBalancer
+    loadBalancerClass: "tailscale"
+    ports:
+      postgresql: 5432
   persistence:
     enabled: true
     size: 10Gi
