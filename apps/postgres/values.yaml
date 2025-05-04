@@ -1,29 +1,29 @@
-architecture: replication
-
-replication:
-  enabled: true
-  readReplicas: 2
-  synchronousCommit: "on"
-  numSynchronousReplicas: 1
-
-postgresql:
-  username: root
-  password: password
-  database: database
-
+global:
+  storageClass: longhorn
+auth:
+  username: myappuser
+  password: "AnotherInsecurePasswordChangeMe!"
+  database: myappdb
 primary:
   persistence:
     enabled: true
-    storageClass: longhorn
-    size: 8Gi
-
+    size: 10Gi
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
 readReplicas:
+  replicaCount: 1
   persistence:
     enabled: true
-    storageClass: longhorn
-    size: 8Gi
-
-resources:
-  requests:
-    memory: 512Mi
-    cpu: 250m
+    size: 10Gi
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
