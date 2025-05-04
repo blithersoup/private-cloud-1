@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-1
+  name: postgres
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/blithersoup/private-cloud-1
     targetRevision: HEAD
-    path: apps/longhorn-ingress
+    path: apps/postgres
     kustomize: {}
   destination:
     server: https://kubernetes.default.svc
