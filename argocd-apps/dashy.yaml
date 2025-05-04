@@ -10,12 +10,23 @@ spec:
     chart: dashy
     targetRevision: 1.0.0
     helm:
-      values: |
+      valuesObject:
         # Example: If you needed to set specific node selectors or tolerations
         # nodeSelector: {}
         # tolerations: []
         # For this basic setup, we don't need specific overrides for the operator.
-        {} # Empty values indicates using chart defaults
+        # Empty values indicates using chart defaults
+        ingress:
+          enabled: true
+          ingressClassName: tailscale
+          hosts:
+            - dashy
+          paths:
+            - /
+          pathType: Prefix
+          tls:
+            - hosts:
+                - dashy
   destination:
     server: https://kubernetes.default.svc
     namespace: dashy
