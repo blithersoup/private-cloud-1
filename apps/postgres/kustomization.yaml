@@ -3,7 +3,7 @@ kind: Kustomization
 
 helmCharts:
   - name: postgresql
-    repo: https://registry-1.docker.io/bitnamicharts
+    repo: oci://registry-1.docker.io/bitnamicharts
     version: 16.6.6
     releaseName: postgresql-db
     namespace: postgres
