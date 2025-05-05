@@ -6,33 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://vyrtualsynthese.github.io/selfhosted-helmcharts/
-    chart: dashy
-    targetRevision: 1.0.0
-    helm:
-      valuesObject:
-        image:
-          repository: elestio/dashy
-          tag: 3.1.1
-        # Example: If you needed to set specific node selectors or tolerations
-        # nodeSelector: {}
-        # tolerations: []
-        # For this basic setup, we don't need specific overrides for the operator.
-        # Empty values indicates using chart defaults
-        ingress:
-          enabled: true
-          className: tailscale
-          rules:
-            - host: dashy
-              http:
-                paths:
-                  - path: /
-                    pathType: Prefix
-                    backend:
-                      service:
-                        name: dashy
-                        port:
-                          number: 8080
+    repoURL: https://github.com/blithersoup/private-cloud-1
+    targetRevision: HEAD
+    path: apps/dashy
   destination:
     server: https://kubernetes.default.svc
     namespace: dashy
