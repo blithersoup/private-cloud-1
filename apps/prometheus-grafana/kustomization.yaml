@@ -1,19 +1,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-helmCharts:
-  - name: kube-prometheus-stack
-    repo: https://prometheus-community.github.io/helm-charts
-    version: 71.1.0
-    releaseName: prometheus
-    namespace: prometheus
-    valuesFile: values.yaml
-
 resources:
   - ingress.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-71.1.0/charts/kube-prometheus-stack/crds/crd-alertmanager.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-71.1.0/charts/kube-prometheus-stack/crds/crd-prometheus.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-71.1.0/charts/kube-prometheus-stack/crds/crd-servicemonitor.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-71.1.0/charts/kube-prometheus-stack/crds/crd-podmonitor.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-71.1.0/charts/kube-prometheus-stack/crds/crd-prometheusrule.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-71.1.0/charts/kube-prometheus-stack/crds/crd-thanosruler.yaml
