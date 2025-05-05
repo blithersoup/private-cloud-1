@@ -22,9 +22,16 @@ spec:
         ingress:
           enabled: true
           className: tailscale
-          tls:
-            - hosts:
-                - dashy
+          rules:
+            - http:
+                paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: dashy
+                        port:
+                          number: 8080
   destination:
     server: https://kubernetes.default.svc
     namespace: dashy
