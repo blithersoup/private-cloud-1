@@ -24,18 +24,6 @@ spec:
                     requests:
                       storage: 30Gi
             retention: 15d
-        global:
-          rbac:
-            pspEnabled: false
-        kube-state-metrics:
-          podSecurityPolicy:
-            enabled: false
-        prometheus-node-exporter:
-          rbac:
-            pspEnabled: false
-        grafana:
-          rbac:
-            pspEnabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: prometheus
@@ -45,6 +33,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - PruneLast=true
-      - Replace=true
+      - ServerSideApply=true
       # ApplyOutOfSyncOnly=true
