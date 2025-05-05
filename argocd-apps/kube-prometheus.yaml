@@ -8,9 +8,22 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/blithersoup/private-cloud-1
-    targetRevision: HEAD
-    path: apps/prometheus-grafana
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 71.1.0
+    helm:
+      valuesObject:
+        prometheus:
+          prometheusSpec:
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: longhorn
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 25Gi
+            retention: 15d
   destination:
     server: https://kubernetes.default.svc
     namespace: prometheus
