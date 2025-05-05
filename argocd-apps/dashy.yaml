@@ -23,7 +23,8 @@ spec:
           enabled: true
           className: tailscale
           rules:
-            - http:
+            - host: dashy
+              http:
                 paths:
                   - path: /
                     pathType: Prefix
