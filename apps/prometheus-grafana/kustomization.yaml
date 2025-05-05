@@ -8,3 +8,6 @@ helmCharts:
     releaseName: prometheus
     namespace: prometheus
     valuesFile: values.yaml
+
+resources:
+  - ingress.yaml
