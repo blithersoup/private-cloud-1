@@ -11,6 +11,9 @@ spec:
     targetRevision: 1.0.0
     helm:
       valuesObject:
+        image:
+          repository: elestio/dashy
+          tag: 3.1.1
         # Example: If you needed to set specific node selectors or tolerations
         # nodeSelector: {}
         # tolerations: []
