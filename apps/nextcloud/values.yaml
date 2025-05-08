@@ -6,3 +6,10 @@ ingress:
         - nextcloud
 nextcloud:
   host: nextcloud
+  adminUser: "admin"
+  adminPassword: "password" # CHANGE THIS!
+
+  configs:
+    "config.php":
+      overwriteprotocol: "https"
+      overwritehost: "nextcloud"
