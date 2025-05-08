@@ -9,7 +9,6 @@ nextcloud:
   adminUser: "admin"
   adminPassword: "password" # CHANGE THIS!
 
-  configs:
-    "config.php":
-      overwriteprotocol: "https"
-      overwritehost: "nextcloud"
+phpClientHttpsFix:
+  enabled: true
+  protocol: https
