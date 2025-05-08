@@ -6,8 +6,8 @@ ingress:
         - nextcloud
 nextcloud:
   host: nextcloud.at-banjo.ts.net
-  adminUser: "admin"
-  adminPassword: "password" # CHANGE THIS!
+  username: "admin"
+  password: "password" # CHANGE THIS!
 
 phpClientHttpsFix:
   enabled: true
