@@ -54,11 +54,11 @@ spec:
 
           resources:
             requests:
-              nvidia.com/gpu: '3'
+              nvidia.com/gpu: '4'
               cpu: '7'
               memory: 8Gi
             limits:
-              nvidia.com/gpu: '3'
+              nvidia.com/gpu: '4'
               cpu: '15'
               memory: 32Gi
 
