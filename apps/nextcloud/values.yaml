@@ -5,7 +5,7 @@ ingress:
     - hosts:
         - nextcloud
 nextcloud:
-  host: nextcloud.at-banjo.ts.net
+  host: nextcloud
   username: "admin"
   password: "password" # CHANGE THIS!
 
