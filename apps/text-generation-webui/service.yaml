@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: text-generation-webui-service
+spec:
+
+  type: ClusterIP
+  ports:
+    - port: 7860
+      targetPort: webui
+      protocol: TCP
+      name: webui
+    - port: 5000
+      targetPort: api
+      protocol: TCP
+      name: api
+
+  selector:
+    app: text-generation-webui
