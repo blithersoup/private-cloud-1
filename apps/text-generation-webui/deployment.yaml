@@ -67,7 +67,6 @@ spec:
               name: config-data
               subPath: CMD_FLAGS
               readOnly: true
-              type: File
             - mountPath: /app/models/
               name: storage
               subPath: models
