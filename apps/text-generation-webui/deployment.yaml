@@ -13,13 +13,13 @@ spec:
         app: text-generation-webui
     spec:
       runtimeClassName: nvidia
-      initContainers:
-        - name: storage-init
-          image:  "atinoda/text-generation-webui:default-nvidia"
-          command: [ 'sh', '-c', "if [ ! -f /init/settings.yaml ]; then cp /app/settings-template.yaml /init/settings.yaml; fi" ]
-          volumeMounts:
-            - mountPath: '/init/'
-              name: storage
+      # initContainers:
+      #   - name: storage-init
+      #     image:  "atinoda/text-generation-webui:default-nvidia"
+      #     command: [ 'sh', '-c', "if [ ! -f /init/settings.yaml ]; then cp /app/settings-template.yaml /init/settings.yaml; fi" ]
+      #     volumeMounts:
+      #       - mountPath: '/init/'
+      #         name: storage
       containers:
         - name: oobabooga
           image: "atinoda/text-generation-webui:default-nvidia"
