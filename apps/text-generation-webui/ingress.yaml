@@ -7,7 +7,7 @@ spec:
     service:
       name: text-generation-webui-service
       port:
-        number: 80
+        number: 7860
   ingressClassName: tailscale
   tls:
     - hosts:
