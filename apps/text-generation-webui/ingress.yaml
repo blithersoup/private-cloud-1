@@ -3,12 +3,25 @@ kind: Ingress
 metadata:
   name: text-generation-webui-ingress
 spec:
-  defaultBackend:
-    service:
-      name: text-generation-webui-service
-      port:
-        number: 7860
   ingressClassName: tailscale
   tls:
     - hosts:
         - chat
+  rules:
+    - host: chat
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: text-generation-webui-service
+                port:
+                  number: 7860
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: text-generation-webui-service
+                port:
+                  number: 5000
