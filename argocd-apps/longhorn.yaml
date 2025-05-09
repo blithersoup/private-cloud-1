@@ -5,10 +5,16 @@ metadata:
   namespace: argocd
 spec:
   ignoreDifferences:
-    - group: longhorn.io
-      kind: Engine
+    - group: apiextensions.k8s.io
+      name: trafficsplits.split.smi-spec.io
+      kind: CustomResourceDefinition
       jsonPointers:
-        - /status
+        - /spec/preserveUnknownFields
+    - group: apiextensions.k8s.io
+      name: trafficsplits.split.smi-spec.io
+      kind: CustomResourceDefinition
+      jsonPointers:
+        - /spec/preserveUnknownFields
   project: default
   source:
     repoURL: https://github.com/blithersoup/private-cloud-1
