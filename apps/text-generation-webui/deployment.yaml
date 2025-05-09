@@ -54,12 +54,12 @@ spec:
 
           resources:
             requests:
-              nvidia.com/gpu: 3
-              cpu: 7
+              nvidia.com/gpu: '3'
+              cpu: '7'
               memory: 8Gi
             limits:
-              nvidia.com/gpu: 3
-              cpu: 15
+              nvidia.com/gpu: '3'
+              cpu: '15'
               memory: 32Gi
 
           volumeMounts:
