@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio-tenant
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://charts.min.io/
+    chart: minio
+    targetRevision: 7.1.1
+
+    helm:
+      values: |
+        rootUser: minioadmin
+        rootPassword: minioadmin123
+        mode: distributed
+        persistence:
+          enabled: true
+          storageClass: standard
+          size: 10Gi
+        consoleIngress:
+          enabled: true
+          ingressClassName: tailscale
+          hosts:
+            - minio
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: minio
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
