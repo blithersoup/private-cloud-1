@@ -25,8 +25,9 @@ spec:
         consoleIngress:
           enabled: true
           ingressClassName: tailscale
-          hosts:
-            - minio
+          tls:  
+            hosts:
+              - minio
 
   destination:
     server: https://kubernetes.default.svc
