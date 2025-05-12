@@ -17,11 +17,11 @@ spec:
         rootUser: minioadmin
         rootPassword: minioadmin123
         mode: distributed
-        replicas: 4
+        replicas: 3
         persistence:
           enabled: true
           storageClass: longhorn
-          size: 10Gi
+          size: 100Gi
         consoleIngress:
           enabled: true
           ingressClassName: tailscale
