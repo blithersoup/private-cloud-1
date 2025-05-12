@@ -16,7 +16,7 @@ spec:
       values: |
         tenant:
           name: minio-1
-          namespace: minio-tenant
+          namespace: minio-operator
           pools:
             - servers: 2
               volumesPerServer: 1
@@ -34,7 +34,7 @@ spec:
           port: 9000
   destination:
     server: https://kubernetes.default.svc
-    namespace: minio-tenant
+    namespace: minio-operator
   syncPolicy:
     automated:
       prune: true
