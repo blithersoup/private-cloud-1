@@ -55,11 +55,11 @@ spec:
           resources:
             requests:
               nvidia.com/gpu: '4'
-              cpu: '7'
+              cpu: '7000m'
               memory: 8Gi
             limits:
               nvidia.com/gpu: '4'
-              cpu: '15'
+              cpu: '15000m'
               memory: 32Gi
 
           volumeMounts:
@@ -67,16 +67,16 @@ spec:
               name: config-data
               subPath: CMD_FLAGS
               readOnly: true
-            - mountPath: /app/models/
+            - mountPath: /user_data/models/
               name: storage
               subPath: models
-            - mountPath: /app/characters/
+            - mountPath: /user_data/characters/
               name: storage
               subPath: characters
-            - mountPath: /app/.cache/
+            - mountPath: /user_data/.cache/
               name: storage
               subPath: cache
-            - mountPath: /app/extensions/
+            - mountPath: /user_data/extensions/
               name: storage
               subPath: extensions
 

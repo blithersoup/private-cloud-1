@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio-tenant
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://operator.min.io/
+    chart: tenant
+    targetRevision: 7.1.1
+
+    helm:
+      values: |
+        tenant:
+          name: minio-1
+          namespace: minio-tenant
+          pools:
+            - servers: 2
+              volumesPerServer: 1
+              size: 50Gi
+              storageClassName: longhorn
+
+          # buckets:
+          #  - name: my-first-bucket
+          # users:
+          #  - accessKey: myuser
+          #    secretKey: mypassword
+
+        metrics:
+          enabled: true
+          port: 9000
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: minio-tenant
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
