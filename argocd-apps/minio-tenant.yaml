@@ -15,10 +15,10 @@ spec:
     helm:
       values: |
         tenant:
-          name: minio-1
           namespace: minio-operator
           pools:
-            - servers: 2
+            - name: minio-1
+              servers: 2
               volumesPerServer: 1
               size: 50Gi
               storageClassName: longhorn
