@@ -17,9 +17,10 @@ spec:
         rootUser: minioadmin
         rootPassword: minioadmin123
         mode: distributed
+        replicas: 4
         persistence:
           enabled: true
-          storageClass: standard
+          storageClass: longhorn
           size: 10Gi
         consoleIngress:
           enabled: true
