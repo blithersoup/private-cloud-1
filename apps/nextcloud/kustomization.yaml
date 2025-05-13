@@ -8,3 +8,6 @@ helmCharts:
     releaseName: nextcloud
     namespace: nextcloud
     valuesFile: values.yaml
+
+resources:
+  - ingress.yaml
