@@ -1,9 +1,9 @@
-ingress:
-  enabled: true
-  className: tailscale
-  tls:
-    - hosts:
-        - nextcloud
+# ingress:
+#   enabled: true
+#   className: tailscale
+#   tls:
+#     - hosts:
+#         - nextcloud
 nextcloud:
   host: nextcloud.at-banjo.ts.net
   username: "admin"
