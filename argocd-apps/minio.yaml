@@ -17,7 +17,7 @@ spec:
         rootUser: minioadmin
         rootPassword: minioadmin123
         mode: distributed
-        replicas: 3
+        replicas: 2
         persistence:
           enabled: true
           storageClass: longhorn
