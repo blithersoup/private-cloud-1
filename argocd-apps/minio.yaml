@@ -24,6 +24,9 @@ spec:
           size: 100Gi
         consoleIngress:
           enabled: false
+        resources:
+          requests:
+            memory: 6Gi
 
   destination:
     server: https://kubernetes.default.svc
