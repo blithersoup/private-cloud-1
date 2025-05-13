@@ -9,6 +9,7 @@ primary:
     ports:
       postgresql: 5432
   persistence:
+    storageClass: "longhorn"
     enabled: true
     size: 10Gi
   resources:
@@ -21,6 +22,7 @@ primary:
 readReplicas:
   replicaCount: 1
   persistence:
+    storageClass: "longhorn"
     enabled: true
     size: 10Gi
   resources:
