@@ -4,6 +4,9 @@
 #   tls:
 #     - hosts:
 #         - nextcloud
+service:
+  annotations:
+    tailscale.com/expose: "true"
 nextcloud:
   host: nextcloud.at-banjo.ts.net
   username: "admin"
