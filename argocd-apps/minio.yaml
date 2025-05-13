@@ -23,11 +23,7 @@ spec:
           storageClass: longhorn
           size: 100Gi
         consoleIngress:
-          enabled: true
-          ingressClassName: tailscale
-          tls:  
-            hosts:
-              - minio
+          enabled: false
 
   destination:
     server: https://kubernetes.default.svc
