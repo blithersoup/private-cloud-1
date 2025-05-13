@@ -4,11 +4,16 @@ metadata:
   name: filestash-ingress
   namespace: filestash
 spec:
-  defaultBackend:
-    service:
-      name: filestash
-      port:
-        name: http
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: filestash
+                port:
+                  name: http
   ingressClassName: tailscale
   tls:
     - hosts:
