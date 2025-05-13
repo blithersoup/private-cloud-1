@@ -12,10 +12,13 @@ spec:
     chart: filestash
     targetRevision: 0.2.0
 
-    # helm:
-    #   values: |
-    #     documentServer:
-    #       enabled: true
+    helm:
+      values: |
+        # documentServer:
+        #   enabled: true
+        service:
+          type: ClusterIP
+          port: 8333
           
 
   destination:
