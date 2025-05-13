@@ -1,9 +1,3 @@
-# ingress:
-#   enabled: true
-#   className: tailscale
-#   tls:
-#     - hosts:
-#         - nextcloud
 service:
   annotations:
     tailscale.com/expose: "true"

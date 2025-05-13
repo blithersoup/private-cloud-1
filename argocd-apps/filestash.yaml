@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: filestash
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://sebagarayco.github.io/helm-charts
+    chart: filestash
+    targetRevision: 0.2.0
+
+    # helm:
+    #   values: |
+    #     rootUser: minioadmin
+    #     rootPassword: minioadmin123
+    #     mode: distributed
+    #     replicas: 2
+    #     persistence:
+    #       enabled: true
+    #       storageClass: longhorn
+    #       size: 100Gi
+    #     consoleIngress:
+    #       enabled: false
+    #     resources:
+    #       requests:
+    #         memory: 6Gi
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: filestash
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
