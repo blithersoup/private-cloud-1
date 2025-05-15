@@ -14,9 +14,6 @@ spec:
 
     helm:
       values: |
-        service:
-          type: ClusterIP
-          port: 8333
         resources:
           requests:
             cpu: 500m
