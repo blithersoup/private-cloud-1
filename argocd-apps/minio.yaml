@@ -16,6 +16,13 @@ spec:
       values: |
         rootUser: minioadmin
         rootPassword: minioadmin123
+        users:
+          - accessKey: console
+            secretKey: console123
+            policy: consoleAdmin
+          - accessKey: filestash
+            secretKey: filestash123
+            policy: readwrite
         mode: distributed
         replicas: 2
         persistence:
