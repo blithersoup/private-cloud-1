@@ -28,11 +28,11 @@ spec:
             cpu: 1000m
             memory: 500Mi
         persistence:
-        filestashState:
-          enabled: true
-          accessMode: ReadWriteOnce
-          storageClass: longhorn
-          storageSize: 100Mi
+          filestashState:
+            enabled: true
+            accessMode: ReadWriteOnce
+            storageClass: longhorn
+            storageSize: 100Mi
 
   destination:
     server: https://kubernetes.default.svc
