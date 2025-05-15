@@ -14,12 +14,25 @@ spec:
 
     helm:
       values: |
-        # documentServer:
-        #   enabled: true
+        image:
+          repository: docker.io/machines/filestash
+          tag: latest
         service:
           type: ClusterIP
           port: 8333
-          
+        resources:
+          requests:
+            cpu: 500m
+            memory: 128Mi
+          limits:
+            cpu: 1000m
+            memory: 500Mi
+        persistence:
+        filestashState:
+          enabled: true
+          accessMode: ReadWriteOnce
+          storageClass: longhorn
+          storageSize: 100Mi
 
   destination:
     server: https://kubernetes.default.svc
