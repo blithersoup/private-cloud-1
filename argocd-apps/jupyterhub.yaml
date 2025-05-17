@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://jupyterhub.github.io/helm-chart/
-    chart: jupyperhub
+    chart: jupyterhub
     targetRevision: 4.2.0
     helm:
       valuesObject:
