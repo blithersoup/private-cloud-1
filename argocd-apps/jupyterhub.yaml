@@ -14,31 +14,42 @@ spec:
     helm:
       valuesObject:
         singleuser:
-          image:
-            name: jupyter/tensorflow-notebook
-            tag: latest-gpu
-            pullPolicy: IfNotPresent
-          # runtimeClassName: nvidia
+          profileList:
+            - display_name: "Python Notebook (CPU Only)"
+              description: "Standard Python environment without GPU."
+              default: true
+              kubespawner_override:
+                image: jupyter/scipy-notebook:latest
+                cpu_limit: 1
+                cpu_guarantee: 0.5
+                mem_limit: 2G
+                mem_guarantee: 1G
+
+            - display_name: "Python Notebook with NVIDIA GPU"
+              description: "Python environment with access to an NVIDIA GPU."
+              kubespawner_override:
+                image: nvcr.io/nvidia/pytorch:23.10-py3
+                extra_resource_limits:
+                  nvidia.com/gpu: "1"
+                cpu_limit: 2
+                cpu_guarantee: 1
+                mem_limit: 8G
+                mem_guarantee: 4G
+                node_selector:
+                  nvidia.com/gpu: "true"
+                tolerations:
+                  - key: "nvidia.com/gpu"
+                    operator: "Exists"
+                    effect: "NoSchedule"
+
           storage:
+            type: dynamic
             capacity: 10Gi
             dynamic:
               storageClass: longhorn
-        hub:
-          config:
-            JupyterHub:
-              authenticator_class: dummy
 
-        # ingress:
-        #   enabled: true
-        #   ingressClassName: tailscale
-        #   hosts:
-        #     - host: jupyterhub
-        #       paths:
-        #         - path: /
-        #           pathType: ImplementationSpecific
-        #   tls:
-        #     - hosts:
-        #         - jupyterhub
+          defaultUrl: "/lab" # [23]
+
   destination:
     server: https://kubernetes.default.svc
     namespace: jupyterhub
