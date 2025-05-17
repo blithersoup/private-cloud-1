@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mlflow
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://community-charts.github.io/helm-charts
+    chart: community-charts/mlflow
+    targetRevision: 0.17.2
+    helm:
+      valuesObject:
+        backendStore:
+          databaseMigration: true
+          postgres:
+            enabled: true
+            host: postgres.postgres.svc.cluster.local
+            port: 5432
+            database: myappdb
+            user: myappuser
+            password: "AnotherInsecurePasswordChangeMe!"
+        artifactRoot:
+          s3:
+            enabled: true
+            bucket: mlflow
+            awsAccessKeyId: minioadmin
+            awsSecretAccessKey: minioadmin
+        extraEnvVars:
+          MLFLOW_S3_ENDPOINT_URL: http://minio-service:9000
+        serviceMonitor:
+          enabled: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mlflow
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -13,7 +13,7 @@ spec:
     targetRevision: 0.2.0
 
     helm:
-      values: |
+      valuesObject:
         resources:
           requests:
             cpu: 500m
