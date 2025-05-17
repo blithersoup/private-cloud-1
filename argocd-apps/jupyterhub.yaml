@@ -18,7 +18,7 @@ spec:
             name: jupyter/tensorflow-notebook
             tag: latest-gpu
             pullPolicy: IfNotPresent
-          runtimeClassName: nvidia
+          # runtimeClassName: nvidia
           storage:
             capacity: 10Gi
             dynamic:
