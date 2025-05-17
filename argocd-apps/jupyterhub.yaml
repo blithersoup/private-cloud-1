@@ -13,6 +13,8 @@ spec:
     targetRevision: 4.2.0
     helm:
       valuesObject:
+        prePuller:
+          enabled: false
         singleuser:
           profileList:
             - display_name: "Python Notebook (CPU Only)"
