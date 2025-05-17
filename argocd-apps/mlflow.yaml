@@ -31,7 +31,7 @@ spec:
         extraEnvVars:
           MLFLOW_S3_ENDPOINT_URL: http://minio.minio.svc.cluster.local:9000
         serviceMonitor:
-          enabled: true
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: mlflow
