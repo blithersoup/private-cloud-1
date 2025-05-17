@@ -28,7 +28,7 @@ spec:
             - display_name: "Python Notebook with NVIDIA GPU"
               description: "Python environment with access to an NVIDIA GPU."
               kubespawner_override:
-                image: nvcr.io/nvidia/pytorch:23.10-py3
+                image: pytorch/pytorch
                 extra_resource_limits:
                   nvidia.com/gpu: "1"
                 cpu_limit: 2
