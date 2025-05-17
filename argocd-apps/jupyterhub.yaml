@@ -19,7 +19,7 @@ spec:
               description: "Standard Python environment without GPU."
               default: true
               kubespawner_override:
-                image: jupyter/scipy-notebook:latest
+                image: jupyter/scipy-notebook
                 cpu_limit: 1
                 cpu_guarantee: 0.5
                 mem_limit: 2G
@@ -48,7 +48,7 @@ spec:
             dynamic:
               storageClass: longhorn
 
-          defaultUrl: "/lab" # [23]
+          defaultUrl: "/lab"
 
   destination:
     server: https://kubernetes.default.svc
