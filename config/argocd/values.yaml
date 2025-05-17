@@ -18,3 +18,32 @@ server:
     tls:
       - hosts:
           - argocd
+
+repoServer:
+  extraInitContainers:
+    - name: download-tools
+      image: alpine:3.8
+      command: [sh, -c]
+      args:
+        - |
+          wget -O argocd-vault-plugin https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v1.6.0/argocd-vault-plugin_1.6.0_linux_amd64 && \
+          chmod +x argocd-vault-plugin && \
+          mv argocd-vault-plugin /custom-tools/
+      volumeMounts:
+        - mountPath: /custom-tools
+          name: custom-tools
+
+  volumes:
+    - name: custom-tools
+      emptyDir: {}
+
+  volumeMounts:
+    - mountPath: /usr/local/bin/argocd-vault-plugin
+      name: custom-tools
+      subPath: argocd-vault-plugin
+  
+  env:
+    - name: ARGOCD_EXEC_TIMEOUT
+      value: "5m"
+    - name: AVP_TYPE
+      value: vault

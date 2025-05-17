@@ -34,6 +34,13 @@ spec:
         resources:
           requests:
             memory: 6Gi
+        buckets:
+          - name: mlflow
+            policy: none
+            purge: false
+          - name: music
+            policy: none
+            purge: false
 
   destination:
     server: https://kubernetes.default.svc
