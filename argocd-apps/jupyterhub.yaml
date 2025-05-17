@@ -13,6 +13,9 @@ spec:
     targetRevision: 4.2.0
     helm:
       valuesObject:
+        proxy:
+          service:
+            type: ClusterIP
         prePuller:
           hook:
             nodeSelector:
