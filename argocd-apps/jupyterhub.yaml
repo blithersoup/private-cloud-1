@@ -24,7 +24,7 @@ spec:
           storage:
             dynamic:
               storageClass: longhorn
-              size: 10Gi
+              capacity: 10Gi
 
         hub:
           config:
