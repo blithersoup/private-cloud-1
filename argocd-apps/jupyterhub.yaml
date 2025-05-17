@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jupyterhub
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://jupyterhub.github.io/helm-chart/
+    chart: jupyperhub
+    targetRevision: 4.2.0
+    helm:
+      valuesObject:
+        singleuser:
+          image:
+            name: jupyter/tensorflow-notebook
+            tag: latest-gpu
+            pullPolicy: IfNotPresent
+
+          runtimeClassName: nvidia
+
+          storage:
+            dynamic:
+              storageClass: longhorn
+              size: 10Gi
+              accessModes:
+                - ReadWriteOnce
+
+        hub:
+          config:
+            JupyterHub:
+              authenticator_class: dummy
+        dummy:
+          password: "password"
+
+        # ingress:
+        #   enabled: true
+        #   ingressClassName: tailscale
+        #   hosts:
+        #     - host: jupyterhub
+        #       paths:
+        #         - path: /
+        #           pathType: ImplementationSpecific
+        #   tls:
+        #     - hosts:
+        #         - jupyterhub
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: jupyterhub
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
