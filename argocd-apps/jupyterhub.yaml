@@ -14,7 +14,8 @@ spec:
     helm:
       valuesObject:
         prePuller:
-          enabled: false
+          hook:
+            enabled: false
         singleuser:
           profileList:
             - display_name: "Python Notebook (CPU Only)"
