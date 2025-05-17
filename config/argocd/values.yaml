@@ -20,6 +20,9 @@ server:
           - argocd
 
 repoServer:
+  nodeSelector:
+    kubernetes.io/arch: amd64
+    
   extraInitContainers:
     - name: download-tools
       image: alpine:3.8
