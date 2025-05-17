@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - minio-ingress.yaml
   - filestash-ingress.yaml
+  - mlflow-ingress.yaml
