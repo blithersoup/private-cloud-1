@@ -15,7 +15,8 @@ spec:
       valuesObject:
         prePuller:
           hook:
-            enabled: false
+            nodeSelector:
+              kubernetes.io/arch: amd64
         singleuser:
           profileList:
             - display_name: "Python Notebook (CPU Only)"
