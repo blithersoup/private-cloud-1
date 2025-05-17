@@ -27,8 +27,6 @@ spec:
           config:
             JupyterHub:
               authenticator_class: dummy
-        dummy:
-          password: "password"
 
         # ingress:
         #   enabled: true
