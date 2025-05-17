@@ -18,14 +18,11 @@ spec:
             name: jupyter/tensorflow-notebook
             tag: latest-gpu
             pullPolicy: IfNotPresent
-
           runtimeClassName: nvidia
-
           storage:
+            capacity: 10Gi
             dynamic:
               storageClass: longhorn
-              capacity: 10Gi
-
         hub:
           config:
             JupyterHub:
