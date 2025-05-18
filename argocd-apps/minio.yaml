@@ -26,12 +26,12 @@ spec:
           - accessKey: mlflow
             secretKey: mlflow123
             policy: readwrite
-        mode: distributed
-        replicas: 2
+        mode: standalone
+        replicas: 1
         persistence:
           enabled: true
           storageClass: longhorn
-          size: 100Gi
+          size: 600Gi
         consoleIngress:
           enabled: false
         resources:

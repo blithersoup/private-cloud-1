@@ -3,4 +3,4 @@ preUpgradeChecker:
 persistence:
   defaultClass: true
   reclaimPolicy: Retain
-  defaultClassReplicaCount: 2
+  defaultClassReplicaCount: 1
