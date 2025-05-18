@@ -23,6 +23,9 @@ spec:
           - accessKey: filestash
             secretKey: filestash123
             policy: readwrite
+          - accessKey: mlflow
+            secretKey: mlflow123
+            policy: readwrite
         mode: distributed
         replicas: 2
         persistence:

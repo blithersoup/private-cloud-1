@@ -1,7 +1,7 @@
 auth:
-  username: myappuser
-  password: "AnotherInsecurePasswordChangeMe!"
-  database: myappdb
+  username: postgresuser
+  password: postgresuser123
+  database: postgres
 primary:
   persistence:
     storageClass: "longhorn"

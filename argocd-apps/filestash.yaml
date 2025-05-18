@@ -11,7 +11,6 @@ spec:
     repoURL: https://sebagarayco.github.io/helm-charts
     chart: filestash
     targetRevision: 0.2.0
-
     helm:
       valuesObject:
         resources:
