@@ -32,22 +32,22 @@ spec:
                 mem_limit: 2G
                 mem_guarantee: 1G
 
-            - display_name: "Python Notebook with NVIDIA GPU"
-              description: "Python environment with access to an NVIDIA GPU."
-              kubespawner_override:
-                image: pytorch/pytorch
-                extra_resource_limits:
-                  nvidia.com/gpu: "1"
-                cpu_limit: 2
-                cpu_guarantee: 1
-                mem_limit: 8G
-                mem_guarantee: 4G
-                node_selector:
-                  nvidia.com/gpu: "true"
-                tolerations:
-                  - key: "nvidia.com/gpu"
-                    operator: "Exists"
-                    effect: "NoSchedule"
+            # - display_name: "Python Notebook with NVIDIA GPU"
+            #   description: "Python environment with access to an NVIDIA GPU."
+            #   kubespawner_override:
+            #     image: pytorch/pytorch
+            #     extra_resource_limits:
+            #       nvidia.com/gpu: "1"
+            #     cpu_limit: 2
+            #     cpu_guarantee: 1
+            #     mem_limit: 8G
+            #     mem_guarantee: 4G
+            #     node_selector:
+            #       nvidia.com/gpu: "true"
+            #     tolerations:
+            #       - key: "nvidia.com/gpu"
+            #         operator: "Exists"
+            #         effect: "NoSchedule"
 
           storage:
             type: dynamic
