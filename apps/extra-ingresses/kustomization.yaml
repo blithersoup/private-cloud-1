@@ -5,3 +5,4 @@ resources:
   - minio-ingress.yaml
   - filestash-ingress.yaml
   - mlflow-ingress.yaml
+  - hubble-ingress.yaml
