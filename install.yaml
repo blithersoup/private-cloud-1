@@ -162,10 +162,7 @@
         pre_reboot_delay: 0
         reboot_timeout: 600
       become: true
-    
-    - debug:
-        msg: "The IP address of the main node is {{ hostvars[groups['main'][0]]['ipaddr'].stdout }} and the clustertoken is {{ hostvars[groups['main'][0]]['clustertoken'] }}"  
-    
+
     - name: Download and install K3s agent
       ansible.builtin.shell: |
         curl -sfL https://get.k3s.io | sh -
