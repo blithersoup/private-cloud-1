@@ -1,69 +1,70 @@
-conf: |-
-  pageInfo:
-    title: private-cloud
-    description: ''
-    navLinks:
-      - title: GitHub
-        path: https://github.com/blithersoup/private-cloud-1
-        target: newtab
-  appConfig:
-    theme: colorful
-    layout: auto
-    iconSize: large
-  sections:
-    - name: Observability
-      icon: ''
-      displayData:
-        sortBy: default
-        rows: 1
-        cols: 1
-        collapsed: false
-        hideForGuests: false
-      items:
-        - title: Grafana
-          icon: hl-grafana
-          url: https://grafana.at-banjo.ts.net
-          target: modal
-          statusCheckUrl: https://grafana.at-banjo.ts.net/api/health
-          id: 0_1375_grafana
-        - title: Longhorn
-          icon: hl-longhorn
-          url: https://longhorn.at-banjo.ts.net
-          target: modal
-          id: 1_1375_longhorn
-        - title: Hubble
-          icon: hl-cilium
-          url: https://hubble.at-banjo.ts.net
-          target: modal
-          id: 2_1375_hubble
-        - title: ArgoCD
-          icon: hl-argo-cd
-          url: https://argocd.at-banjo.ts.net
-          target: modal
-          id: 3_1375_argocd
-    - name: Apps
-      displayData:
-        sortBy: default
-        rows: 1
-        cols: 1
-        collapsed: false
-        hideForGuests: false
-      items:
-        - title: Minio
-          icon: hl-minio-light
-          url: https://minio.at-banjo.ts.net
+staticConfigurations:
+  conf: |-
+    pageInfo:
+      title: private-cloud
+      description: ''
+      navLinks:
+        - title: GitHub
+          path: https://github.com/blithersoup/private-cloud-1
           target: newtab
-          id: 0_404_minio
-        - title: Filestash
-          icon: hl-filestash
-          url: https://filestash.at-banjo.ts.net
-          target: newtab
-          id: 1_404_filestash
-        - title: MLflow
-          icon: si-mlflow
-          url: https://mlflow.at-banjo.ts.net
-          target: newtab
-          id: 2_404_mlflow
+    appConfig:
+      theme: colorful
+      layout: auto
+      iconSize: large
+    sections:
+      - name: Observability
+        icon: ''
+        displayData:
+          sortBy: default
+          rows: 1
+          cols: 1
+          collapsed: false
+          hideForGuests: false
+        items:
+          - title: Grafana
+            icon: hl-grafana
+            url: https://grafana.at-banjo.ts.net
+            target: modal
+            statusCheckUrl: https://grafana.at-banjo.ts.net/api/health
+            id: 0_1375_grafana
+          - title: Longhorn
+            icon: hl-longhorn
+            url: https://longhorn.at-banjo.ts.net
+            target: modal
+            id: 1_1375_longhorn
+          - title: Hubble
+            icon: hl-cilium
+            url: https://hubble.at-banjo.ts.net
+            target: modal
+            id: 2_1375_hubble
+          - title: ArgoCD
+            icon: hl-argo-cd
+            url: https://argocd.at-banjo.ts.net
+            target: modal
+            id: 3_1375_argocd
+      - name: Apps
+        displayData:
+          sortBy: default
+          rows: 1
+          cols: 1
+          collapsed: false
+          hideForGuests: false
+        items:
+          - title: Minio
+            icon: hl-minio-light
+            url: https://minio.at-banjo.ts.net
+            target: newtab
+            id: 0_404_minio
+          - title: Filestash
+            icon: hl-filestash
+            url: https://filestash.at-banjo.ts.net
+            target: newtab
+            id: 1_404_filestash
+          - title: MLflow
+            icon: si-mlflow
+            url: https://mlflow.at-banjo.ts.net
+            target: newtab
+            id: 2_404_mlflow
 image:
   repository: elestio/dashy
   tag: 3.1.1
