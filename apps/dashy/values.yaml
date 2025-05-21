@@ -29,7 +29,7 @@ static:
             - title: Grafana
               icon: hl-grafana
               url: https://grafana.at-banjo.ts.net
-              target: modal
+              target: newtab
               statusCheckUrl: https://grafana.at-banjo.ts.net/api/health
               id: 0_1375_grafana
             - title: Longhorn
@@ -45,7 +45,7 @@ static:
             - title: ArgoCD
               icon: hl-argo-cd
               url: https://argocd.at-banjo.ts.net
-              target: modal
+              target: newtab
               id: 3_1375_argocd
         - name: Apps
           displayData:
