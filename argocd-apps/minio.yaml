@@ -31,7 +31,7 @@ spec:
         persistence:
           enabled: true
           storageClass: longhorn
-          size: 600Gi
+          size: 800Gi
         consoleIngress:
           enabled: false
         resources:
