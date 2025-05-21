@@ -13,6 +13,38 @@
       shell: swapoff -a
       become: yes
     
+    - name: Increase kernel fs.file-max (system-wide)
+      ansible.posix.sysctl:
+        name: fs.file-max
+        value: 2097152
+        sysctl_file: /etc/sysctl.d/99-k3s-limits.conf
+        state: present
+        reload: yes
+      become: true
+    
+    - name: Increase kernel fs.nr_open (per-process)
+      ansible.posix.sysctl:
+        name: fs.nr_open
+        value: "1048576"
+        sysctl_file: /etc/sysctl.d/99-k3s-limits.conf
+        state: present
+        reload: yes
+      become: true
+    
+    - name: Configure user limits via PAM (limits.conf)
+      ansible.builtin.lineinfile:
+        path: /etc/security/limits.d/99-k3s-nofile.conf
+        create: yes
+        mode: '0644'
+        regexp: "^{{ item.user | regex_escape() }}\\s+{{ item.type }}\\s+nofile"
+        line: "{{ item.user }} {{ item.type }} nofile 1048576"
+      loop:
+        - { user: '*', type: 'soft' }
+        - { user: '*', type: 'hard' }
+        - { user: 'root', type: 'soft' }
+        - { user: 'root', type: 'hard' }
+      become: true
+    
     - name: Update APT package cache
       ansible.builtin.apt:
         update_cache: yes
@@ -84,6 +116,33 @@
         K3S_TOKEN: "{{ clustertoken.stdout }}"
         INSTALL_K3S_EXEC: "--flannel-backend=none --disable-network-policy --disable-kube-proxy"
       become: true
+    
+    - name: Ensure K3s systemd directory exists
+      ansible.builtin.file:
+        path: "/etc/systemd/system/k3s.service.d"
+        state: directory
+        mode: '0755'
+      become: true
+    
+    - name: Set LimitNOFILE for K3s
+      ansible.builtin.copy:
+        dest: "/etc/systemd/system/k3s.service.d/override.conf"
+        content: |
+          [Service]
+          LimitNOFILE=1048576
+        mode: '0644'
+      become: true
+
+    - name: Reload systemd daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes
+      become: true
+
+    - name: Restart K3s
+      ansible.builtin.systemd:
+        name: k3s
+        state: restarted
+      become: true
 
     - name: Ensure ~/.kube directory exists
       become: false
@@ -136,6 +195,38 @@
     - name: disable swap
       shell: swapoff -a
       become: true
+    
+    - name: Increase kernel fs.file-max (system-wide)
+      ansible.posix.sysctl:
+        name: fs.file-max
+        value: 2097152
+        sysctl_file: /etc/sysctl.d/99-k3s-limits.conf
+        state: present
+        reload: yes
+      become: true
+    
+    - name: Increase kernel fs.nr_open (per-process)
+      ansible.posix.sysctl:
+        name: fs.nr_open
+        value: "1048576"
+        sysctl_file: /etc/sysctl.d/99-k3s-limits.conf
+        state: present
+        reload: yes
+      become: true
+
+    - name: Configure user limits via PAM (limits.conf)
+      ansible.builtin.lineinfile:
+        path: /etc/security/limits.d/99-k3s-nofile.conf
+        create: yes
+        mode: '0644'
+        regexp: "^{{ item.user | regex_escape() }}\\s+{{ item.type }}\\s+nofile"
+        line: "{{ item.user }} {{ item.type }} nofile 1048576"
+      loop:
+        - { user: '*', type: 'soft' }
+        - { user: '*', type: 'hard' }
+        - { user: 'root', type: 'soft' }
+        - { user: 'root', type: 'hard' }
+      become: true
 
     - name: Install packages
       ansible.builtin.apt:
@@ -169,6 +260,33 @@
       environment:
         K3S_TOKEN: "{{ hostvars[groups['main'][0]]['clustertoken'].stdout }}"
         K3S_URL: "https://{{ hostvars[groups['main'][0]]['ipaddr'].stdout }}:6443"
+      become: true
+
+    - name: Ensure K3s systemd directory exists
+      ansible.builtin.file:
+        path: "/etc/systemd/system/k3s-agent.service.d"
+        state: directory
+        mode: '0755'
+      become: true
+    
+    - name: Set LimitNOFILE for K3s agent
+      ansible.builtin.copy:
+        dest: "/etc/systemd/system/k3s-agent.service.d/override.conf"
+        content: |
+          [Service]
+          LimitNOFILE=1048576
+        mode: '0644'
+      become: true
+
+    - name: Reload systemd daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes
+      become: true
+
+    - name: Restart K3s services
+      ansible.builtin.systemd:
+        name: k3s-agent
+        state: restarted
       become: true
 
 - hosts: main
