@@ -16,6 +16,9 @@ static:
         theme: colorful
         layout: auto
         iconSize: large
+        hideComponents:
+          hideSettings: true
+          hideFooter: true
       sections:
         - name: Observability
           icon: ''
