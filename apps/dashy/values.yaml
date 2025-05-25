@@ -50,6 +50,10 @@ static:
               url: https://argocd.at-banjo.ts.net
               target: newtab
               id: 3_1375_argocd
+            - title: Prometheus
+              icon: hl-prometheus
+              url: https://prometheus.at-banjo.ts.net
+              target: modal
         - name: Apps
           displayData:
             sortBy: default
