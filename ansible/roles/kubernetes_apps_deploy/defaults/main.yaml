@@ -4,7 +4,7 @@ private_cloud_repo_version: "main"
 
 cilium_chart_version: "1.17.4"
 gpu_operator_chart_version: "25.3.0"
-tailscale_operator_chart_version: "1.64.0"
+tailscale_operator_chart_version: "1.84.0"
 argocd_chart_version: "3.35.4"
 
 helm_repos:
