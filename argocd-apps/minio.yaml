@@ -37,6 +37,9 @@ spec:
         resources:
           requests:
             memory: 6Gi
+        metrics:
+          serviceMonitor:
+            enabled: true
         buckets:
           - name: mlflow
             policy: none
