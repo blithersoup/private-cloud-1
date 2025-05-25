@@ -1,20 +1,18 @@
 server:
-  service:
-    ports:
-      https:
-        enabled: true
-        port: 443
-        targetPort: 8080
-        protocol: TCP
-        name: "https"
   ingress:
     enabled: true
     ingressClassName: tailscale
+    annotations: {}
     hosts:
-      - argocd
-    paths:
-      - /
-    pathType: Prefix
+      - host: argocd
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 80
     tls:
       - hosts:
           - argocd
