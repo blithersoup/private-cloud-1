@@ -40,6 +40,8 @@ spec:
         metrics:
           serviceMonitor:
             enabled: true
+            additionalLabels:
+              release: kube-prometheus-stack
         buckets:
           - name: mlflow
             policy: none

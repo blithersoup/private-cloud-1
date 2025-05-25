@@ -4,3 +4,8 @@ persistence:
   defaultClass: true
   reclaimPolicy: Retain
   defaultClassReplicaCount: 1
+metrics:
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: kube-prometheus-stack
