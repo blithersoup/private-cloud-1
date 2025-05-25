@@ -1,0 +1,86 @@
+- name: Find UUID for the root mount point from Ansible facts
+  ansible.builtin.set_fact:
+    root_fs_uuid: "{{ item.uuid }}"
+  loop: "{{ ansible_mounts }}"
+  when: item.mount == "/"
+
+- name: Ensure / is mounted with noatime
+  ansible.posix.mount:
+    path: /
+    src: "UUID={{ root_fs_uuid }}"
+    fstype: ext4
+    opts: defaults,noatime
+    state: mounted
+  become: true
+  when: root_fs_uuid is defined
+
+- name: Disable swap permanently in fstab
+  ansible.builtin.replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+  become: true
+
+- name: Increase kernel fs.file-max (system-wide)
+  ansible.posix.sysctl:
+    name: fs.file-max
+    value: "2097152"
+    sysctl_file: /etc/sysctl.d/99-k3s-limits.conf
+    state: present
+    reload: true
+  become: true
+
+- name: Increase kernel fs.nr_open (per-process)
+  ansible.posix.sysctl:
+    name: fs.nr_open
+    value: "1048576"
+    sysctl_file: /etc/sysctl.d/99-k3s-limits.conf
+    state: present
+    reload: true
+  become: true
+
+- name: Configure user limits via PAM (limits.conf)
+  ansible.builtin.lineinfile:
+    path: /etc/security/limits.d/99-k3s-nofile.conf
+    create: true
+    mode: '0644'
+    regexp: "^{{ item.user | regex_escape() }}\\s+{{ item.type }}\\s+nofile"
+    line: "{{ item.user }} {{ item.type }} nofile 1048576"
+  loop:
+    - { user: '*', type: 'soft' }
+    - { user: '*', type: 'hard' }
+    - { user: 'root', type: 'soft' }
+    - { user: 'root', type: 'hard' }
+  become: true
+
+- name: Update APT package cache (once before batch installs)
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+
+- name: Upgrade all APT packages
+  ansible.builtin.apt:
+    upgrade: dist
+  become: true
+
+- name: Install common packages
+  ansible.builtin.apt:
+    name: "{{ common_packages_to_install }}"
+    state: present
+  become: true
+
+- name: Ensure avahi-daemon is enabled and started
+  ansible.builtin.systemd:
+    name: avahi-daemon
+    enabled: true
+    state: started
+  become: true
+
+- name: Reboot node due to pending changes
+  ansible.builtin.reboot:
+    msg: "Rebooting node because /var/run/reboot-required exists"
+    pre_reboot_delay: 2
+    reboot_timeout: 600
+    post_reboot_delay: 2
+    test_command: uptime
+  become: true

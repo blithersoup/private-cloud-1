@@ -1,0 +1,7 @@
+common_packages_to_install:
+  - zfsutils-linux
+  - nfs-kernel-server
+  - cifs-utils
+  - open-iscsi
+  - avahi-daemon
+  - libnss-mdns

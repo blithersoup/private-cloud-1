@@ -1,0 +1,54 @@
+- name: Ensure ufw is installed
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+  become: true
+
+- name: Set UFW default policies
+  community.general.ufw:
+    default: "{{ item.policy }}"
+    direction: "{{ item.direction }}"
+  loop:
+    - { policy: deny, direction: incoming }
+    - { policy: allow, direction: outgoing }
+  become: true
+
+- name: Allow essential loopback traffic
+  community.general.ufw:
+    rule: allow
+    interface: lo
+    direction: in
+  become: true
+
+- name: Allow Kubelet API
+  community.general.ufw:
+    rule: allow
+    port: '10250'
+    proto: tcp
+    from_ip: "{{ item }}"
+  loop:
+    - '10.42.0.0/16' # pod CIDR
+    - '10.43.0.0/16' # service CIDR
+  become: true
+
+- name: Allow required inbound ports
+  community.general.ufw:
+    rule: allow
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  loop:
+    - { port: "22",    proto: "tcp" }   # SSH access
+    - { port: "6443",  proto: "tcp" }   # K3s API Server (control plane only)
+    - { port: "8472",  proto: "udp" }   # Cilium VXLAN/Geneve overlay networking
+    - { port: "4240",  proto: "tcp" }   # Cilium health checks
+    - { port: "4244",  proto: "tcp" }   # Hubble Relay
+    - { port: "41641", proto: "udp" }   # Tailscale direct connections
+    - { port: "5353",  proto: "udp" }   # mDNS (Avahi for local discovery)
+  become: true
+  when: item.port != '6443' or inventory_hostname in groups['main']
+
+- name: Enable UFW and logging
+  community.general.ufw:
+    state: enabled
+    logging: 'on'
+  become: true

@@ -1,0 +1,50 @@
+- name: Check if nvidia-smi exists (basic check for driver installation)
+  ansible.builtin.stat:
+    path: /usr/bin/nvidia-smi
+  register: nvidia_smi_stat
+
+- name: Install Ubuntu GPU drivers if nvidia-smi not found
+  ansible.builtin.command: ubuntu-drivers autoinstall
+  become: true
+  when: not nvidia_smi_stat.stat.exists
+  changed_when: "'already installed' not in autoinstall_result.stdout and autoinstall_result.rc == 0" # Heuristic
+  register: autoinstall_result
+
+- name: Ensure keyrings directory exists
+  ansible.builtin.file:
+    path: /usr/share/keyrings
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Download and dearmor NVIDIA GPG key
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+    creates: /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+  become: true
+
+- name: Add NVIDIA container toolkit repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb/{{ arch_map[ansible_architecture] | default('amd64') }}/ /"
+    state: present
+    filename: nvidia-container-toolkit
+    update_cache: true
+  become: true
+
+- name: Install NVIDIA container toolkit and python3-kubernetes
+  ansible.builtin.apt:
+    name:
+      - nvidia-container-toolkit
+      - python3-kubernetes
+    state: present
+    update_cache: false
+  become: true
+
+- name: Reboot node due to pending changes
+  ansible.builtin.reboot:
+    msg: "Rebooting node because /var/run/reboot-required exists"
+    pre_reboot_delay: 2
+    reboot_timeout: 600
+    post_reboot_delay: 2
+    test_command: uptime
+  become: true

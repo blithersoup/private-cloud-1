@@ -1,6 +1,6 @@
 # run
 ```
-ansible-playbook install.yaml -i inventory -e @values.yaml --ask-become-pass 
+ansible-playbook ansible/install.yaml -i inventory -e @values.yaml --ask-become-pass 
 ```
 # install
 

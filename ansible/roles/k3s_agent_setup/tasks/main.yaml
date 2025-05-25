@@ -1,0 +1,32 @@
+- name: Download and install K3s Agent
+  ansible.builtin.shell: |
+    curl -sfL https://get.k3s.io | sh -
+  environment:
+    K3S_TOKEN: "{{ hostvars[groups['main'][0]]['clustertoken_value'] }}"
+    K3S_URL: "https://{{ hostvars[groups['main'][0]]['ipaddr']['stdout'] }}:6443"
+  args:
+    creates: /etc/systemd/system/k3s-agent.service
+  become: true
+
+- name: Ensure K3s agent systemd override directory exists
+  ansible.builtin.file:
+    path: "/etc/systemd/system/k3s-agent.service.d"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Configure LimitNOFILE for K3s agent service
+  ansible.builtin.copy:
+    dest: "/etc/systemd/system/k3s-agent.service.d/override.conf"
+    content: |
+      [Service]
+      LimitNOFILE=1048576
+    mode: '0644'
+  become: true
+
+- name: Restart K3s agent
+  ansible.builtin.systemd:
+    name: k3s-agent
+    state: restarted
+    daemon_reload: true
+  become: true

@@ -1,0 +1,122 @@
+- name: Define K3s token file path
+  ansible.builtin.set_fact:
+    k3s_token_file_path: "/home/{{ ansible_user_id }}/k3s_cluster.token"
+
+- name: Check for existing K3s token
+  ansible.builtin.stat:
+    path: "{{ k3s_token_file_path }}"
+  register: k3s_token_stat
+  become: true
+
+- name: Generate K3s cluster token if not exists
+  ansible.builtin.shell: |
+    head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32
+  register: generated_k3s_token
+  when: not k3s_token_stat.stat.exists
+  changed_when: true
+  become: true
+
+- name: Store K3s cluster token
+  ansible.builtin.copy:
+    content: "{{ generated_k3s_token.stdout_lines | first }}"
+    dest: "{{ k3s_token_file_path }}"
+    mode: '0600'
+    owner: root
+    group: root
+  when: generated_k3s_token.changed
+  become: true
+
+- name: Load K3s cluster token for use
+  ansible.builtin.slurp:
+    src: "{{ k3s_token_file_path }}"
+  register: k3s_token_content_slurped
+  become: true
+
+- name: Set clustertoken_value fact from stored token
+  ansible.builtin.set_fact:
+    clustertoken_value: "{{ k3s_token_content_slurped.content | b64decode | trim }}"
+    clustertoken:
+      stdout: "{{ k3s_token_content_slurped.content | b64decode | trim }}"
+
+- name: Download and install K3s server
+  ansible.builtin.shell: |
+    curl -sfL https://get.k3s.io | sh -
+  environment:
+    K3S_TOKEN: "{{ clustertoken_value }}"
+    INSTALL_K3S_EXEC: "--flannel-backend=none --disable-network-policy --disable-kube-proxy --write-kubeconfig-mode=644"
+  args:
+    creates: /etc/systemd/system/k3s.service
+  become: true
+  
+- name: Ensure K3s systemd override directory exists
+  ansible.builtin.file:
+    path: "/etc/systemd/system/k3s.service.d"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Configure LimitNOFILE for K3s service
+  ansible.builtin.copy:
+    dest: "/etc/systemd/system/k3s.service.d/override.conf"
+    content: |
+      [Service]
+      LimitNOFILE=1048576
+    mode: '0644'
+  become: true
+
+- name: “Reload systemd and restart K3s”
+  ansible.builtin.systemd:
+    name: k3s
+    state: restarted
+    daemon_reload: true
+  become: true
+
+- name: Set ipaddr fact from ansible_default_ipv4
+  ansible.builtin.set_fact:
+    ipaddr:
+      stdout: "{{ ansible_default_ipv4.address }}"
+  when: ansible_default_ipv4.address is defined
+
+- name: Ensure ~/.kube directory exists for user {{ ansible_user_id }}
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user_id }}/.kube"
+    state: directory
+    mode: '0700'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+
+- name: Export kubeconfig from K3s server
+  ansible.builtin.command: k3s kubectl config view --raw
+  become: true
+  register: kubeconfig_output
+  changed_when: false
+
+- name: Write kubeconfig to user's home directory
+  ansible.builtin.copy:
+    content: "{{ kubeconfig_output.stdout }}"
+    dest: "/home/{{ ansible_user_id }}/.kube/config"
+    mode: '0600'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+
+- name: Ensure KUBECONFIG environment variable is in .bashrc
+  ansible.builtin.lineinfile:
+    path: "/home/{{ ansible_user_id }}/.bashrc"
+    line: "export KUBECONFIG=$HOME/.kube/config"
+    regexp: "^export KUBECONFIG="
+    state: present
+    insertafter: EOF
+    create: true
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+
+- name: Ensure kubectl completion is sourced in .bashrc
+  ansible.builtin.lineinfile:
+    path: "/home/{{ ansible_user_id }}/.bashrc"
+    line: "source <(kubectl completion bash)"
+    regexp: "^source <\\(kubectl completion bash\\)"
+    state: present
+    insertafter: EOF
+    create: true
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"

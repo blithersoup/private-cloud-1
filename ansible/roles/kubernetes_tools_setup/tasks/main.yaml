@@ -1,0 +1,55 @@
+- name: Set Helm platform architecture string
+  ansible.builtin.set_fact:
+    helm_platform_arch_to_use: "{{ arch_map[ansible_architecture] | default('amd64') }}"
+
+- name: Install Helm CLI
+  ansible.builtin.unarchive:
+    src: "https://get.helm.sh/helm-{{ helm_version }}-linux-{{ helm_platform_arch_to_use }}.tar.gz"
+    dest: /usr/local/bin
+    extra_opts: ["--strip-components=1", "linux-{{ helm_platform_arch_to_use }}/helm"]
+    owner: root
+    group: root
+    mode: '0755'
+    remote_src: true
+    creates: /usr/local/bin/helm
+  become: true
+
+- name: Set CLI architecture for Cilium/Hubble
+  ansible.builtin.set_fact:
+    cli_arch_to_use: "{{ arch_map[ansible_architecture] | default('amd64') }}"
+
+- name: Download Cilium CLI
+  ansible.builtin.get_url:
+    url: "https://github.com/cilium/cilium-cli/releases/download/v{{ cilium_cli_version }}/cilium-linux-{{ cli_arch_to_use }}.tar.gz"
+    dest: "/tmp/cilium-linux-{{ cli_arch_to_use }}.tar.gz"
+    mode: '0644'
+  become: true
+
+- name: Extract and install Cilium CLI
+  ansible.builtin.unarchive:
+    src: "/tmp/cilium-linux-{{ cli_arch_to_use }}.tar.gz"
+    dest: "/usr/local/bin/"
+    remote_src: true
+    creates: /usr/local/bin/cilium
+    mode: '0755'
+    owner: root
+    group: root
+  become: true
+
+- name: Download Hubble CLI
+  ansible.builtin.get_url:
+    url: "https://github.com/cilium/hubble/releases/download/v{{ hubble_cli_version }}/hubble-linux-{{ cli_arch_to_use }}.tar.gz"
+    dest: "/tmp/hubble-linux-{{ cli_arch_to_use }}.tar.gz"
+    mode: '0644'
+  become: true
+
+- name: Extract and install Hubble CLI
+  ansible.builtin.unarchive:
+    src: "/tmp/hubble-linux-{{ cli_arch_to_use }}.tar.gz"
+    dest: "/usr/local/bin/"
+    creates: /usr/local/bin/hubble
+    remote_src: true
+    mode: '0755'
+    owner: root
+    group: root
+  become: true

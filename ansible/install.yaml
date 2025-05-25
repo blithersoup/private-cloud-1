@@ -1,0 +1,23 @@
+---
+- name: Prepare all nodes (OS, UFW)
+  hosts: all
+  roles:
+    - role: ufw_config
+    - role: os_common_config
+
+- name: Setup K3s and NVIDIA GPU components on main
+  hosts: main
+  roles:
+    - role: k3s_server_setup
+    - role: nvidia_gpu_setup
+
+- name: Setup K3s Agents on agent nodes
+  hosts: agent
+  roles:
+    - role: k3s_agent_setup
+
+- name: Setup K3s Server, Kubernetes tools, and deploy applications on main node
+  hosts: main
+  roles:
+    - role: kubernetes_tools_setup
+    - role: kubernetes_apps_deploy

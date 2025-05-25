@@ -1,0 +1,25 @@
+private_cloud_repo_url: "https://github.com/blithersoup/private-cloud-1.git"
+private_cloud_repo_dest_base: "/home/{{ ansible_user_id }}"
+private_cloud_repo_version: "main"
+
+cilium_chart_version: "1.17.4"
+gpu_operator_chart_version: "25.3.0"
+tailscale_operator_chart_version: "1.64.0"
+argocd_chart_version: "3.35.4"
+
+helm_repos:
+  - name: cilium
+    url: https://helm.cilium.io/
+  - name: nvidia
+    url: https://helm.ngc.nvidia.com/nvidia
+  - name: tailscale
+    url: https://pkgs.tailscale.com/helmcharts
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+
+nvidia_timeslice_config_path: "config/nvidia/timeslice.yaml"
+gpu_operator_values_path: "config/nvidia/values.yaml"
+argocd_values_path: "config/argocd/values.yaml"
+argocd_application_manifest_path: "argocd-apps/application.yaml"
+
+argocd_admin_password_debug: true
