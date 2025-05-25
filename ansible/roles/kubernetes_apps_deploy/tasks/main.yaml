@@ -110,18 +110,14 @@
   retries: 30
   delay: 10
 
-- name: Install/Upgrade Argo CD with values file
-  community.kubernetes.helm:
-    name: argocd
-    chart_ref: argo/argo-cd
-    chart_version: "{{ argocd_chart_version }}"
-    release_namespace: argocd
-    create_namespace: true
-    wait: true
-    timeout: "10m"
-    values_files:
-      - "{{ cloned_repo_path }}/{{ argocd_values_path }}"
-    state: present
+- name: Install/Upgrade Argo CD with values file # could not get helm builtin to work here
+  ansible.builtin.shell:
+    cmd: >
+      helm upgrade --install argocd argo/argo-cd \
+        --wait \
+        --namespace argocd \
+        --create-namespace \
+        -f {{ cloned_repo_path }}/{{ argocd_values_path }}
 
 - name: Get Argo CD initial admin secret
   kubernetes.core.k8s_info:
