@@ -11,7 +11,7 @@ spec:
     path: apps/prometheus-grafana
   destination:
     server: https://kubernetes.default.svc
-    namespace: prometheus
+    namespace: monitoring
   syncPolicy:
     automated:
       prune: true
