@@ -29,7 +29,7 @@ A more detailed report can be found on my [blog](https://gradyarnold.com/blog/fo
 * [Postgresql](https://www.postgresql.org/) - [helm](https://github.com/bitnami/charts/tree/main/bitnami/postgresql)
 * [MLflow](https://mlflow.org/) - [helm](https://github.com/community-charts/helm-charts/tree/main/charts/mlflow)
 * [Minio](https://min.io/) - [helm](https://github.com/minio/minio/blob/master/helm/minio/README.md)
-* [Filestash] - [helm](https://github.com/sebagarayco/helm-filestash/tree/master/charts/filestash)
+* [Filestash](https://www.filestash.app/) - [helm](https://github.com/sebagarayco/helm-filestash/tree/master/charts/filestash)
 * [Dashy](https://dashy.to/) - [helm](https://github.com/vyrtualsynthese/selfhosted-helmcharts/tree/main/charts/dashy)
 
 ## Usage
