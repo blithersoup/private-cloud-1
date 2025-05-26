@@ -1,0 +1,3 @@
+## Dashboards to import
+9628  # Postgresql
+13502 # Minio
