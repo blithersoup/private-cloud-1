@@ -48,7 +48,7 @@ tailscale_client_id:
 tailscale_client_secret:
 ```
 
-```toml
+```ini
 # inventory
 [main]
 private-cloud-1  ansible_connection=ssh
