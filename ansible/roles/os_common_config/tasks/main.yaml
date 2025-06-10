@@ -53,7 +53,7 @@
     - { user: 'root', type: 'hard' }
   become: true
 
-- name: Update APT package cache (once before batch installs)
+- name: Update APT package cache
   ansible.builtin.apt:
     update_cache: true
   become: true
@@ -76,9 +76,8 @@
     state: started
   become: true
 
-- name: Reboot node due to pending changes
+- name: Reboot node
   ansible.builtin.reboot:
-    msg: "Rebooting node because /var/run/reboot-required exists"
     pre_reboot_delay: 2
     reboot_timeout: 600
     post_reboot_delay: 2
